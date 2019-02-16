@@ -10,6 +10,7 @@ namespace AppleCatcher
 {
     class FallingItems : Sprite
     {
+
         int x = 0;
         int y = 0;
         int ySpeed = 5;
@@ -17,7 +18,7 @@ namespace AppleCatcher
         public FallingItems(Vector2 vector2, Texture2D texture2D, Color color )
             : base(vector2, texture2D, color)
         {
-
+           
 
         }
         public void Move(Viewport viewport)

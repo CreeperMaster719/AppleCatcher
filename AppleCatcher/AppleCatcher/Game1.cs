@@ -17,6 +17,11 @@ namespace AppleCatcher
         Random position;
         ItemCatcher testCatcher;
         List <FallingItems> goodItems;
+        List<Texture2D> textures;
+        Random RandomTextures = new Random();
+        int numberOfItems = 10;
+
+        
         int score = 0;
         SpriteFont font;
         public Game1()
@@ -37,16 +42,43 @@ namespace AppleCatcher
 
         protected override void LoadContent()
         {
+            textures = new List<Texture2D>();
+            for (int i = 1; i <= 8; i++)
+            {
+                textures.Add(Content.Load<Texture2D>("Falling_Item_" + i));
+            }
+            for (int i = 1; i <= 4; i++)
+            {
+                textures.Add(Content.Load<Texture2D>("Falling_Enemy_" + i));
+            }
+
+            //textures.Add(Content.Load<Texture2D>("Falling_Item_1"));
+            //textures.Add(Content.Load<Texture2D>("Falling_Item_2"));
+            //textures.Add(Content.Load<Texture2D>("Falling_Item_3"));
+            //textures.Add(Content.Load<Texture2D>("Falling_Item_4"));
+            //textures.Add(Content.Load<Texture2D>("Falling_Item_5"));
+            //textures.Add(Content.Load<Texture2D>("Falling_Item_6"));
+            //textures.Add(Content.Load<Texture2D>("Falling_Item_7"));
+            //textures.Add(Content.Load<Texture2D>("Falling_Item_8"));
+            //textures.Add(Content.Load<Texture2D>("Falling_Enemy_1"));
+            //textures.Add(Content.Load<Texture2D>("Falling_Enemy_2"));
+            //textures.Add(Content.Load<Texture2D>("Falling_Enemy_3"));
+            //textures.Add(Content.Load<Texture2D>("Falling_Enemy_4"));
+            position = new Random();
             goodItems = new List<FallingItems>();
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            Vector2 testPosition = new Vector2(100, 50);
+            Vector2 testPosition = new Vector2(position.Next(0,1000), -50);
             Texture2D testTexture = Content.Load <Texture2D>("Test_Item");
             Color testTint = Color.White;
-            for(int i = 0; i < 20; i++)
+            for(int i = 0; i < numberOfItems; i++)
             {
-                goodItems.Add(new FallingItems(testPosition, testTexture, testTint));
+                goodItems.Add(new FallingItems(testPosition, textures[RandomTextures.Next(0,7)], testTint));
             }
+            //for (int i = 0; i < 1; i++)
+           // {
+                goodItems.Add(new FallingItems(testPosition, textures[RandomTextures.Next(8, 11)], testTint));
+           // }
 
             Vector2 testPositionC = new Vector2(200, 860);
             Texture2D testTextureC = Content.Load<Texture2D>("Test_Catcher");
@@ -62,9 +94,9 @@ namespace AppleCatcher
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
-            position = new Random();
+            
 
-            testCatcher.Update(goodItems, GraphicsDevice.Viewport, position, Keys.A, Keys.D);
+            testCatcher.Update(goodItems,textures, GraphicsDevice.Viewport, position, Keys.A, Keys.D, numberOfItems);
             // TODO: Add your update logic here
 
             base.Update(gameTime);
@@ -78,7 +110,7 @@ namespace AppleCatcher
             {
                 goodItems[i].Draw(spriteBatch);
             }
-            spriteBatch.DrawString(font, $"{testCatcher.Score}", new Vector2(100, 100), Color.Orange);
+            spriteBatch.DrawString(font, $"{testCatcher.TotalScore}", new Vector2(100, 100), Color.Orange);
             testCatcher.Draw(spriteBatch);
             // TODO: Add your drawing code here
             spriteBatch.End();
