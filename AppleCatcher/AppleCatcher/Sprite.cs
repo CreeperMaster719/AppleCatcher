@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace AppleCatcher
 {
-    class Sprite
+    public class Sprite
     {
        public Vector2 position;
        public Texture2D texture;
@@ -16,12 +16,11 @@ namespace AppleCatcher
 
         public Sprite(Vector2 vector2, Texture2D texture2D, Color color)
         {
-            this.position = vector2;
-            this.texture = texture2D;
-            this.tint = color;
-
-
+            position = vector2;
+            texture = texture2D;
+            tint = color;
         }
+
         public Rectangle HitBox
         {
             get
@@ -30,14 +29,9 @@ namespace AppleCatcher
             }
         }
 
-        public void Draw(SpriteBatch spriteBatch)
+        public virtual void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(texture, position, tint);
         }
-
-
-
-
-
     }
 }

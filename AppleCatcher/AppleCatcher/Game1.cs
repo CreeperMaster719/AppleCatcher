@@ -81,7 +81,7 @@ namespace AppleCatcher
            // }
 
             Vector2 testPositionC = new Vector2(200, 860);
-            Texture2D testTextureC = Content.Load<Texture2D>("Test_Catcher");
+            Texture2D testTextureC = Content.Load<Texture2D>("Falling_Selector_1_Scaled");
             font = Content.Load<SpriteFont>("Font");
             Color testTintC = Color.White;
             testCatcher = new ItemCatcher(testPositionC, testTextureC, testTintC);

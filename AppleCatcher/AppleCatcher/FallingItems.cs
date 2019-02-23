@@ -8,25 +8,19 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace AppleCatcher
 {
-    class FallingItems : Sprite
+    public class FallingItems : Sprite
     {
 
         int x = 0;
         int y = 0;
         int ySpeed = 5;
-        //double xSpeed = 0.1;
-        public FallingItems(Vector2 vector2, Texture2D texture2D, Color color )
-            : base(vector2, texture2D, color)
-        {
-           
 
-        }
+        public FallingItems(Vector2 vector2, Texture2D texture2D, Color color)
+            : base(vector2, texture2D, color) { }
+
         public void Move(Viewport viewport)
         {
-
-                y += ySpeed;
-
-
+            y += ySpeed;
         }
     }
 }
