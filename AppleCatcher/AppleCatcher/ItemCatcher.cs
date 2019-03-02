@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Media;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
 
 namespace AppleCatcher
 {
@@ -15,9 +18,13 @@ namespace AppleCatcher
         double slowDown = 0.94;
         public int Score;
         int itemGain;
+        int delay = 0;
         float degrees = 0;
         float radians = 0;
+        
+        
         double Mx = 0;
+
         float rotation
         {
             get
@@ -35,10 +42,11 @@ namespace AppleCatcher
             Score = 0;
             TotalScore = 0;
         }
-
-        public void Update(List<FallingItems> items, List<Texture2D> textures, Viewport viewport, Random random, Keys keyLeft, Keys keyRight, int numberOfItems)
+        public void Update(List<FallingItems> items, List<Texture2D> textures, Viewport viewport, Random random, Keys keyLeft, Keys keyRight, int numberOfItems, SoundEffect sound)
         {
+            
             Random itemRandomizer = new Random();
+           
             KeyboardState keyboard = Keyboard.GetState();
             if (keyboard.IsKeyDown(keyLeft))
             {
@@ -70,14 +78,18 @@ namespace AppleCatcher
                 {
                     if (i <= numberOfItems - numberOfEnemies)
                     {
-                        Score += 1;
-                        TotalScore += 1;
+                        //Score += item.ScoreValue;
+                        //TotalScore += item.ScoreValue;
+                        Score += 2;
+                        TotalScore += 2;
                         item.position.Y = -100;
                         item.position.X = random.Next(0, viewport.Width - item.texture.Width);
                         item.texture = textures[itemRandomizer.Next(0, 7)];
                     }
                     else
                     {
+                        //Score += item.ScoreValue;
+                        //TotalScore += item.ScoreValue;
                         Score += -10;
                         TotalScore += -10;
                         item.position.Y = -100;
@@ -87,13 +99,15 @@ namespace AppleCatcher
 
                 }
 
-                item.position.Y += 10;
+                item.position.Y += (float)item.FallingSpeed;
+                item.FallingSpeed += 0.05;
 
                 if (item.position.Y + item.texture.Height > viewport.Height + 100)
                 {
                     //item.position.Y = 0;
-                    // item.position.X = position.Next(0, GraphicsDevice.Viewport.Width);
+                    item.position.X = random.Next(0, viewport.Width - texture.Width);
                     item.position.Y = -100;
+                    item.FallingSpeed = 0;
                     item.position.X = random.Next(0, viewport.Width - texture.Width);
                 }
             }
@@ -101,12 +115,23 @@ namespace AppleCatcher
             {
                 numberOfEnemies++;
                 Score = 0;
+                
             }
             else if (TotalScore < 0)
             {
                 numberOfEnemies--;
                 TotalScore = 0;
             }
+            if (keyboard.IsKeyDown(Keys.Left) || keyboard.IsKeyDown(Keys.Right)) 
+            {
+                sound.Play();
+                //https://www.youtube.com/watch?v=9yEM_OjzfMo for hitting bad character.////
+                while (true)
+                {
+                    
+                }
+            }
+           
         }
 
         public override void Draw(SpriteBatch spriteBatch)

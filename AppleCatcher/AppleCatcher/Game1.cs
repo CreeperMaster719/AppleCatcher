@@ -1,8 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
+using System.Media;
 
 namespace AppleCatcher
 {
@@ -19,8 +21,10 @@ namespace AppleCatcher
         List <FallingItems> goodItems;
         List<Texture2D> textures;
         Random RandomTextures = new Random();
+        KeyboardState keyboard = Keyboard.GetState();
+        SoundEffect sound;
         int numberOfItems = 10;
-
+        int youWin = 0;
         
         int score = 0;
         SpriteFont font;
@@ -42,6 +46,7 @@ namespace AppleCatcher
 
         protected override void LoadContent()
         {
+            sound = Content.Load<SoundEffect>("gnomed");
             textures = new List<Texture2D>();
             for (int i = 1; i <= 8; i++)
             {
@@ -73,13 +78,25 @@ namespace AppleCatcher
             Color testTint = Color.White;
             for(int i = 0; i < numberOfItems; i++)
             {
-                goodItems.Add(new FallingItems(testPosition, textures[RandomTextures.Next(0,7)], testTint));
+                //goodItems.Add(new FallingItems(testPosition, textures[RandomTextures.Next(0,7)], testTint));
+                goodItems.Add(new FallingItems(testPosition, textures[i + 1], testTint));
             }
             //for (int i = 0; i < 1; i++)
            // {
-                goodItems.Add(new FallingItems(testPosition, textures[RandomTextures.Next(8, 11)], testTint));
-           // }
-
+                //goodItems.Add(new FallingItems(testPosition, textures[0], testTint));
+            // }
+            //goodItems[0].ScoreValue = 8;
+            //goodItems[1].ScoreValue = 4;
+            //goodItems[2].ScoreValue = 6;
+            //goodItems[3].ScoreValue = 1;
+            //goodItems[4].ScoreValue = 2;
+            //goodItems[5].ScoreValue = 4;
+            //goodItems[6].ScoreValue = 1;
+            //goodItems[7].ScoreValue = 2;
+            //goodItems[8].ScoreValue = -25;
+            //goodItems[9].ScoreValue = -5;
+           //goodItems[10].ScoreValue = -15;
+           //goodItems[11].ScoreValue = -10;
             Vector2 testPositionC = new Vector2(200, 860);
             Texture2D testTextureC = Content.Load<Texture2D>("Falling_Selector_1_Scaled");
             font = Content.Load<SpriteFont>("Font");
@@ -92,11 +109,17 @@ namespace AppleCatcher
 
         protected override void Update(GameTime gameTime)
         {
+
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
-            
 
-            testCatcher.Update(goodItems,textures, GraphicsDevice.Viewport, position, Keys.A, Keys.D, numberOfItems);
+            keyboard = Keyboard.GetState();
+
+            if (youWin == 0)
+            {
+                testCatcher.Update(goodItems, textures, GraphicsDevice.Viewport, position, Keys.A, Keys.D, numberOfItems, sound);
+            }
+
             // TODO: Add your update logic here
 
             base.Update(gameTime);
@@ -110,7 +133,13 @@ namespace AppleCatcher
             {
                 goodItems[i].Draw(spriteBatch);
             }
+            if(testCatcher.TotalScore >= 250)
+            {
+                spriteBatch.DrawString(font, $"You Win!!!", new Vector2(300, 300), Color.Orange);
+                youWin = 1;
+            }
             spriteBatch.DrawString(font, $"{testCatcher.TotalScore}", new Vector2(100, 100), Color.Orange);
+            spriteBatch.DrawString(font, $"{testCatcher.Score}", new Vector2(100, 180), Color.Orange);
             testCatcher.Draw(spriteBatch);
             // TODO: Add your drawing code here
             spriteBatch.End();

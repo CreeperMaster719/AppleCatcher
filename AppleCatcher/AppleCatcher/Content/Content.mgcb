@@ -176,6 +176,12 @@
 /processorParam:TextureFormat=Compressed
 /build:Font.spritefont
 
+#begin gnomed.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:gnomed.wav
+
 #begin Test_Catcher.png
 /importer:TextureImporter
 /processor:TextureProcessor
