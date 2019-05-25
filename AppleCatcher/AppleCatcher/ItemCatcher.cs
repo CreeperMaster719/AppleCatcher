@@ -71,6 +71,8 @@ namespace AppleCatcher
             Mx *= slowDown;
             degrees *= (float)slowDown;
             position.X += (float)(Mx);
+
+
             for (int i = 0; i < items.Count; i++)
             {
                 FallingItems item = items[i];
